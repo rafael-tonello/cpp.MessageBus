@@ -56,7 +56,13 @@ namespace Shared{
                     }
                 });
 			}
+
+			static MessageBus default;
 	};
+
+	MessageBus dmb = MessageBus::default;
+
+
 }
 
 #endif // MESSAGEBUS_H
