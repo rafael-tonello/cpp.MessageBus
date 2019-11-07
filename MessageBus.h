@@ -27,16 +27,9 @@ namespace Shared{
 	class MessageBus{
 		private:
             vector<__MessageItem*> observers;
-            ThreadPool* tasker;
-
-
-
 		public:
-            MessageBus(ThreadPool *taskerToBeUsed = NULL){
-                if (taskerToBeUsed == NULL)
-                    taskerToBeUsed = new ThreadPool();
+            MessageBus(){
 
-                this->tasker = taskerToBeUsed;
             }
 
 			void observate(function<void(string, void* params)> onNewMessage)
@@ -49,20 +42,16 @@ namespace Shared{
 
 			void message(string title, void* params)
 			{
-                this->tasker->enqueue([this, title, params](){
-                    for (auto &curr: this->observers)
-                    {
-                        curr->event(title, params);
-                    }
-                });
+                for (auto &curr: this->observers)
+                {
+                    curr->event(title, params);
+                }
 			}
 
-			static MessageBus default;
+			static MessageBus def;
 	};
 
-	MessageBus dmb = MessageBus::default;
-
-
+	//MessageBus *dmb = &MessageBus::def;
 }
 
 #endif // MESSAGEBUS_H
